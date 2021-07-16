@@ -220,4 +220,14 @@ impl Pwm {
         period_file.write_all(format!("{}", period_ns).as_bytes())?;
         Ok(())
     }
+
+    /// Set polarity
+    pub fn set_polarity(&self, polarity: Polarity) -> Result<()> {
+        let mut polarity_file = pwm_file_wo(&self.chip, self.number, "polarity")?;
+        polarity_file.write_all(match polarity {
+            Polarity::Normal => "normal",
+            Polarity::Inverse => "inversed",
+        }.as_bytes())?;
+        Ok(())
+    }
 }
